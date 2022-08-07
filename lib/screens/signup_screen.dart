@@ -36,7 +36,6 @@ class _SignupScreenState extends State<SignupScreen> {
     Uint8List im = await pickImage(ImageSource.gallery);
     setState(() {
       _image = im;
-      print(_image);
     });
   }
 
@@ -63,8 +62,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 : const CircleAvatar(
                     radius: 64,
                     backgroundImage: NetworkImage(
-                        'https://thumbs.dreamstime.com/b/default-avatar-profile-image-vector-social-media-user-icon-potrait-182347582.jpg'),
-                  ),
+                        'https://thumbs.dreamstime.com/b/default-avatar-profile-image-vector-social-media-user-icon-potrait-182347582.jpg')),
             Positioned(
               bottom: -10,
               left: 80,
@@ -105,12 +103,15 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
           const SizedBox(height: 24),
           InkWell(
-            onTap: () => AuthMethods().signupUser(
-              email: emailController.text,
-              password: passController.text,
-              username: usernameController.text,
-              bio: bioController.text,
-            ),
+            onTap: () async {
+              String res = await AuthMethods().signupUser(
+                email: emailController.text,
+                password: passController.text,
+                username: usernameController.text,
+                bio: bioController.text,
+                file: _image!,
+              );
+            },
             child: Container(
               width: double.infinity,
               alignment: Alignment.center,
