@@ -3,10 +3,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:instagram_clone/auth_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/widgets/text_field.dart';
 
+import '../auth_methods.dart';
 import '../utils/utils.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -22,6 +22,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController bioController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   Uint8List? _image;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -30,6 +31,25 @@ class _SignupScreenState extends State<SignupScreen> {
     passController.dispose();
     usernameController.dispose();
     bioController.dispose();
+  }
+
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().signupUser(
+      email: emailController.text,
+      password: passController.text,
+      username: usernameController.text,
+      bio: bioController.text,
+      file: _image!,
+    );
+    setState(() {
+      _isLoading = false;
+    });
+    if (res != 'Success') {
+      showSnackBar(res, context);
+    }
   }
 
   void selectImage() async {
@@ -103,15 +123,7 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
           const SizedBox(height: 24),
           InkWell(
-            onTap: () async {
-              String res = await AuthMethods().signupUser(
-                email: emailController.text,
-                password: passController.text,
-                username: usernameController.text,
-                bio: bioController.text,
-                file: _image!,
-              );
-            },
+            onTap: signUpUser,
             child: Container(
               width: double.infinity,
               alignment: Alignment.center,
@@ -124,7 +136,12 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 color: blueColor,
               ),
-              child: const Text("Sign Up"),
+              child: _isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                      color: primaryColor,
+                    ))
+                  : const Text("Sign Up"),
             ),
           ),
           const SizedBox(height: 12),
