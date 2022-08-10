@@ -3,6 +3,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram_clone/responsive/mobile_screen_layout.dart';
+import 'package:instagram_clone/responsive/responsive_layout.dart';
+import 'package:instagram_clone/responsive/web_screen_layout.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/widgets/text_field.dart';
 
@@ -49,6 +52,15 @@ class _SignupScreenState extends State<SignupScreen> {
     });
     if (res != 'Success') {
       showSnackBar(res, context);
+    } else {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            webScreenSLayout: MobileScreenLayout(),
+            mobileScreenSLayout: WebScreenLayout(),
+          ),
+        ),
+      );
     }
   }
 

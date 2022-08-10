@@ -33,6 +33,7 @@ dependencies:
   firebase_storage:
   flutter_svg:
   image_picker:
+  provider: ^6.0.3
   flutter:
 
     sdk: flutter
