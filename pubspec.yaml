@@ -34,6 +34,7 @@ dependencies:
   flutter_svg:
   image_picker:
   provider: ^6.0.3
+  uuid:
   flutter:
 
     sdk: flutter
