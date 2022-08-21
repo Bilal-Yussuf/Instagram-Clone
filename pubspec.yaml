@@ -35,6 +35,7 @@ dependencies:
   image_picker:
   provider: ^6.0.3
   uuid:
+  intl:
   flutter:
 
     sdk: flutter

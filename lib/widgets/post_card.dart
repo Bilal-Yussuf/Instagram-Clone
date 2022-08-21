@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/utils/colors.dart';
+import 'package:intl/intl.dart';
 
 class PostCard extends StatelessWidget {
-  const PostCard({Key? key}) : super(key: key);
+  final snap;
+
+  const PostCard({Key? key, required this.snap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,8 @@ class PostCard extends StatelessWidget {
                 CircleAvatar(
                   radius: 16,
                   backgroundImage: NetworkImage(
-                      'https://firebasestorage.googleapis.com/v0/b/instagram-clone-bf124.appspot.com/o/posts%2FPaKmuRwcrVV88Lp2oUj4UeOQd5T2%2F3cbae420-19a6-11ed-972c-dd2b866314d8?alt=media&token=c4973ead-0a62-4c9c-8e58-457310ebcf67'),
+                    snap['profImage'],
+                  ),
                 ),
                 Expanded(
                   child: Padding(
@@ -31,7 +35,7 @@ class PostCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Username",
+                          snap['username'],
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -69,6 +73,98 @@ class PostCard extends StatelessWidget {
               ],
             ),
           ),
+          // Post Image
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.35,
+            width: double.infinity,
+            child: Image.network(snap['postUrl'], fit: BoxFit.cover),
+          ),
+          // Post Like and Comment Buttons
+          Row(
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.favorite,
+                  color: Colors.red,
+                ),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.comment_outlined,
+                ),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.send,
+                ),
+              ),
+              Expanded(
+                  child: Align(
+                alignment: Alignment.bottomRight,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.bookmark_border),
+                ),
+              ))
+            ],
+          ),
+          // Description
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DefaultTextStyle(
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2!
+                      .copyWith(fontWeight: FontWeight.w800),
+                  child: Text('${snap['likes'].length} Likes',
+                      style: Theme.of(context).textTheme.bodyText2),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.only(top: 8),
+                  child: RichText(
+                      text: TextSpan(
+                    style: TextStyle(color: primaryColor),
+                    children: [
+                      TextSpan(
+                        text: snap['username'],
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(
+                        text: ' ${snap['description']}',
+                      ),
+                    ],
+                  )),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 4),
+                    child: const Text(
+                      "View all 200 Comments",
+                      style: TextStyle(fontSize: 16, color: secondaryColor),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 4),
+                  child: Text(
+                    DateFormat.yMMMd().format(
+                      snap['datePublished'].toDate(),
+                    ),
+                    style: TextStyle(fontSize: 16, color: secondaryColor),
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
